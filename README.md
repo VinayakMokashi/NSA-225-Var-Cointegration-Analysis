@@ -52,9 +52,9 @@ Using the Engle-Granger test, we checked for a cointegrated relationship between
 Forecasts were generated for the next five periods using the VAR model, and the fanchart visualizations demonstrated the forecast uncertainty and confidence intervals.
 
 ## Key Findings
-Long-Term Relationship: The Futures and Spot prices are cointegrated, suggesting a long-term equilibrium despite short-term fluctuations.
-Causality: Futures prices influence Spot Index in the short term but not vice versa.
-Shock Impact: Shocks in the Futures price affect the Spot Index, making it a key indicator for predictive purposes in financial markets.
+__Long-Term Relationship__: The Futures and Spot prices are cointegrated, suggesting a long-term equilibrium despite short-term fluctuations.
+__Causality__: Futures prices influence Spot Index in the short term but not vice versa.
+__Shock Impact__: Shocks in the Futures price affect the Spot Index, making it a key indicator for predictive purposes in financial markets.
 
 ## Files in This Repository
 Cointegration.R: R script for cointegration testing and analysis.
