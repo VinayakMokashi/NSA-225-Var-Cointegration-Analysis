@@ -5,10 +5,15 @@ This project explores the dynamic relationship between the Nikkei Stock Average 
 The analysis includes:
 
 __Exploratory Data Analysis__: Initial investigation into the relationship and correlation between Futures Price and Spot Index.
+
 __Stationarity Testing__: Conducted using the Phillips-Perron test and Augmented Dickey-Fuller test to assess the need for differencing in series.
+
 __VAR Model__: Developed for multivariate time series forecasting and analysis of interdependent relationships.
+
 __Cointegration Test__: Used to determine if the Futures and Spot prices maintain a long-term equilibrium.
+
 __Policy Simulations__: Granger causality testing, impulse response function, and variance decomposition to evaluate the effects of shocks and causality in the variables.
+
 __Forecasting__: Forecasts generated from the model with visualization of fan charts.
 
 ## Data Description:
