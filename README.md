@@ -1,4 +1,4 @@
-# VAR and Cointegration Analysis of Nikkei 225 Futures and Spot Prices
+# VAR and Cointegration Analysis of Nikkei Stock Average (NSA) 225 Futures and Spot Prices
 
 This project explores the dynamic relationship between the Nikkei Stock Average 225 (NSA) Futures and Spot Prices using Vector Autoregressive (VAR) and Cointegration analysis. Using monthly data over a 10-year period, we perform statistical tests and build models to understand causality, stationarity, and long-term equilibrium between these financial time series.
 
