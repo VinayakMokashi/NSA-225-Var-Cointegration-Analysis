@@ -73,4 +73,5 @@ Report.docx: Detailed report with methodology, analysis, and conclusions (Also c
 ## Prerequisites
 To run the analysis, you will need:
 R and RStudio
+
 __Libraries__: tseries, tidyverse, urca, vars, mFilter, forecast, TSstudio, ggplot2
