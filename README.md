@@ -18,12 +18,16 @@ __Forecasting__: Forecasts generated from the model with visualization of fan ch
 
 ## Data Description:
 __Source__: Monthly data for NSA Futures Price and Spot Index collected from Investing.com.
+
 __Period__: May 2012 to April 2022, covering 120 data points.
+
 ### Variables:
 __Futures Price__: Price of Nikkei 225 Futures.
+
 __Spot Index__: Index value of Nikkei 225 at the time of each record.
 
 ## Methodology:
+
 1. __Exploratory Data Analysis (EDA)__
 The scatter plot analysis showed a positive correlation between the Futures Price and Spot Index, indicating a potential relationship suitable for further statistical modeling.
 
