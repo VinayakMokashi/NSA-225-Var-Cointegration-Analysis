@@ -30,27 +30,27 @@ __Spot Index__: Index value of Nikkei 225 at the time of each record.
 
 ## Methodology:
 
-1. __Exploratory Data Analysis (EDA)__
+1. __Exploratory Data Analysis (EDA)__:
 The scatter plot analysis showed a positive correlation between the Futures Price and Spot Index, indicating a potential relationship suitable for further statistical modeling.
 
-2. __Stationarity Testing__
+2. __Stationarity Testing__:
 Using the Phillips-Perron test for initial stationarity checks, both series were found to be non-stationary. We then confirmed the non-stationarity with the Augmented Dickey-Fuller (ADF) test. First differencing made both series stationary, classifying them as I(1).
 
-3. __VAR Model__
+3. __VAR Model__:
 The optimal lag length was selected using criteria (AIC, HQ, SC, FPE) that pointed to a one-lag VAR model. We developed the model to analyze the interaction between Futures and Spot prices, with R-squared values above 0.95, indicating a good model fit.
 
-4. __Model Diagnostics__
+4. __Model Diagnostics__:
 Serial Correlation: Conducted tests confirmed no autocorrelation in residuals.
 Structural Stability: Stability tests indicated no structural breaks, ensuring the model's reliability over the observed period.
 
-5. __Granger Causality and Impulse Response Function__
+5. __Granger Causality and Impulse Response Function__:
 Granger Causality: The test showed that Futures price Granger-causes Spot Index, but the Spot Index does not Granger-cause Futures price.
 Impulse Response Function: Analyzed shocks in one variable and their impact on the other. Shocks in the Futures price significantly impacted the Spot Index, whereas shocks in the Spot Index did not affect the Futures price.
 
-7. __Cointegration Analysis__
+6. __Cointegration Analysis__:
 Using the Engle-Granger test, we checked for a cointegrated relationship between the Futures and Spot prices. The analysis revealed that the two series are cointegrated, implying a long-term equilibrium relationship.
 
-8. __Forecasting__
+7. __Forecasting__:
 Forecasts were generated for the next five periods using the VAR model, and the fanchart visualizations demonstrated the forecast uncertainty and confidence intervals.
 
 ## Key Findings
