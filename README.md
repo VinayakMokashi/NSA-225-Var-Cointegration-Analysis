@@ -53,13 +53,19 @@ Forecasts were generated for the next five periods using the VAR model, and the 
 
 ## Key Findings
 __Long-Term Relationship__: The Futures and Spot prices are cointegrated, suggesting a long-term equilibrium despite short-term fluctuations.
+
 __Causality__: Futures prices influence Spot Index in the short term but not vice versa.
+
 __Shock Impact__: Shocks in the Futures price affect the Spot Index, making it a key indicator for predictive purposes in financial markets.
 
 ## Files in This Repository
+
 Cointegration.R: R script for cointegration testing and analysis.
+
 VAR.R: R script for building and evaluating the VAR model.
+
 DataFile.csv: Dataset containing NSA Futures and Spot prices for analysis.
+
 Report.docx: Detailed report with methodology, analysis, and conclusions (Also contains the used R codes)
 
 ## Prerequisites
