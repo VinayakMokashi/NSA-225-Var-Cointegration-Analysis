@@ -43,7 +43,6 @@ data$Future.Price=rev(data$Future.Price)
 data$Index=rev(data$Index)
 data$Date=rev(data$Date)
 View(data)
-?as.Date
 colnames(data)
 summary(data)
 str(data)

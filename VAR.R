@@ -49,14 +49,12 @@ ggplot(data=data)+geom_point(mapping=aes(x=Future.Price, y=Index))
 
 
 #Positive correlation
-?ts
 #Converting to time series
 FuturesPrice=ts(data$Future.Price,start=c(2012,5),frequency=12)
 Spot_Index=ts(data$Index,start=c(2012,5),frequency=12)
 
 autoplot(cbind(FuturesPrice,Spot_Index),ylab="FuturesPrice and Spot Index")
 #To test Stationarity
-?pp.test
 pp.test(FuturesPrice) #Not stationary
 pp.test(Spot_Index) #Not stationary
 
@@ -79,11 +77,9 @@ data.bv
 #Finding the Optimum Lags
 lagselect=VARselect(data.bv,lag.max=10, type="const")
 lagselect$selection
-?VARselect
 #All indicators account for 1 lag so we build model with 1 lag
 
 #Building model
-?VAR
 #VAR(1) model
 Modeldata1=VAR(data.bv,p=1, type="const", season= NULL, exogen=NULL)
 summary(Modeldata1)
@@ -92,7 +88,6 @@ summary(Modeldata1)
 
 #Dignosing the VAR Model
 #Serial Correlation
-?serial.test
 serial1=serial.test(Modeldata1,lags.pt=12,type="PT.asymptotic")
 serial1
 #p value>0.05 - So no Serial correlation
@@ -109,7 +104,6 @@ serial1
 # #Non Normal
 # 
 #Testing Breaks in Stability of the residuals
-?stability
 Stability1=stability(Modeldata1,type="OLS-CUSUM")
 plot(Stability1)
 #There is stability since no curve goes above or below the red lines
@@ -123,7 +117,6 @@ plot(Stability1)
 
 #Granger causuality
 #2 vars so two casualties will be seen
-?causality
 Granger_FuturesPrice=causality(Modeldata1, cause="FuturesPrice")
 Granger_FuturesPrice$Granger
 # FuturesPrice  Granger-cause Spot_Index
@@ -159,7 +152,6 @@ plot(FEVD1)
 #For Spot Index,shocks in Future price affects the Spot Index
 
 #VAR Forecasting
-?predict
 forecast=predict(Modeldata1,n.ahead=5,ci=0.95)
 #Fanchart forecast for Futures Price
 fanchart(forecast, names="FuturesPrice")
