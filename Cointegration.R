@@ -1,6 +1,38 @@
-library(tseries)
-library(forecast)
-data=read.csv(file.choose(),header=TRUE)
+# =============================================================================
+# Cointegration.R - Engle-Granger cointegration analysis
+# -----------------------------------------------------------------------------
+# Nikkei Stock Average (NSA) 225: Futures Price vs. Spot Index
+#
+# Purpose : Test whether the Futures Price and Spot Index series share a
+#           long-run equilibrium using the Engle-Granger two-step method:
+#             1. Confirm both series are I(1) via the ADF test.
+#             2. Estimate the hedge ratio by OLS and build the spread.
+#             3. Test the spread for stationarity; an I(0) spread implies the
+#                two I(1) series are cointegrated.
+# Input   : DataFile.csv  (monthly data, May 2012 - Apr 2022, 120 obs)
+# Output  : Console test results + plots (series overlay, differenced
+#           series, spread).
+#
+# How to run:
+#   1. Install dependencies once:  source("install_packages.R")
+#   2. Set the working directory to this repository's root.
+#   3. Run line-by-line in RStudio, or:  Rscript Cointegration.R
+# =============================================================================
+
+# ---- Packages ---------------------------------------------------------------
+library(tseries)    # adf.test (Augmented Dickey-Fuller stationarity test)
+library(forecast)   # time-series helpers
+library(ggplot2)    # scatter plot
+
+# ---- Load the dataset -------------------------------------------------------
+# Reads DataFile.csv from the working directory; falls back to a file-picker
+# dialog if the file is not found. Set the working directory to the repository
+# root before running, e.g. setwd("path/to/NSA-225-Var-Cointegration-Analysis").
+data = if (file.exists("DataFile.csv")) {
+  read.csv("DataFile.csv", header = TRUE)
+} else {
+  read.csv(file.choose(), header = TRUE)
+}
 View(data)
 #To reverse the data
 # x=c(1,2,3)
@@ -59,7 +91,6 @@ plot(diff(data$Index),type="l",col="blue",lwd=2)
 #----- Check correlation
 # We check how these two series are related with correlation command
 cor(data$Future.Price,data$Index)
-library(ggplot2)
 ggplot(data=data)+geom_point(mapping=aes(x=Future.Price, y=Index))
 
 

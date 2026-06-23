@@ -1,18 +1,36 @@
-# Load required packages to do VAR
-library(tseries)
-library(tidyverse)
-library(urca)
-# install.packages("vars")
-library(vars)
-# install.packages("mFilter")
-library("mFilter")
-library(forecast)
-# install.packages("TSstudio")
-library(TSstudio)
+# =============================================================================
+# VAR.R - Vector Autoregression (VAR) analysis
+# -----------------------------------------------------------------------------
+# Nikkei Stock Average (NSA) 225: Futures Price vs. Spot Index
+#
+# Purpose : Build and diagnose a bivariate VAR model, then run policy
+#           simulations (Granger causality, impulse response functions,
+#           variance decomposition) and forecast both series.
+# Input   : DataFile.csv  (monthly data, May 2012 - Apr 2022, 120 obs)
+# Output  : Console test results + plots (ACF/PACF, stability, IRF, FEVD,
+#           forecast fancharts).
+#
+# How to run:
+#   1. Install dependencies once:  source("install_packages.R")
+#   2. Set the working directory to this repository's root.
+#   3. Run line-by-line in RStudio, or:  Rscript VAR.R
+# =============================================================================
 
-#Load the dataset
+# ---- Packages (only those actually used by this script) ---------------------
+library(tseries)    # pp.test  (Phillips-Perron stationarity test)
+library(vars)       # VARselect, VAR, serial.test, stability, causality, irf, fevd
+library(forecast)   # autoplot for time-series objects
+library(ggplot2)    # scatter plot
 
-data=read.csv(file.choose(),header=TRUE)
+# ---- Load the dataset -------------------------------------------------------
+# Reads DataFile.csv from the working directory; falls back to a file-picker
+# dialog if the file is not found. Set the working directory to the repository
+# root before running, e.g. setwd("path/to/NSA-225-Var-Cointegration-Analysis").
+data = if (file.exists("DataFile.csv")) {
+  read.csv("DataFile.csv", header = TRUE)
+} else {
+  read.csv(file.choose(), header = TRUE)
+}
 View(data)
 #To reverse the data
 # x=c(1,2,3)
@@ -27,7 +45,6 @@ View(data)
 
 #A simple plot
 
-library(ggplot2)
 ggplot(data=data)+geom_point(mapping=aes(x=Future.Price, y=Index))
 
 
