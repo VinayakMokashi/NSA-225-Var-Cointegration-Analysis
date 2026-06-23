@@ -1,0 +1,5 @@
+# Mark binary assets so Git never tries to diff or convert them.
+*.docx binary
+*.png  binary
+*.jpg  binary
+*.pdf  binary

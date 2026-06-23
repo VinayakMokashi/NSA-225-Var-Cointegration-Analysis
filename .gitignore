@@ -1,3 +1,6 @@
+# Default plot device output when scripts are run via Rscript
+Rplots.pdf
+
 # History files
 .Rhistory
 .Rapp.history
