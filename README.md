@@ -1,77 +1,223 @@
-# VAR and Cointegration Analysis of Nikkei Stock Average (NSA) 225 Futures and Spot Prices
+# VAR & Cointegration Analysis of Nikkei 225 Futures and Spot Prices
 
-This project explores the dynamic relationship between the Nikkei Stock Average 225 (NSA) Futures and Spot Prices using Vector Autoregressive (VAR) and Cointegration analysis. Using monthly data over a 10-year period, we perform statistical tests and build models to understand causality, stationarity, and long-term equilibrium between these financial time series.
+![R](https://img.shields.io/badge/R-4.2%2B-276DC3?logo=r&logoColor=white)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Status](https://img.shields.io/badge/status-complete-brightgreen.svg)
 
-## Project Overview:
+A time-series econometrics study of the dynamic relationship between the
+**Nikkei Stock Average (NSA) 225 Futures Price** and its **Spot Index**, using
+**Vector Autoregression (VAR)** and **Engle–Granger cointegration** analysis on
+10 years of monthly data (May 2012 – April 2022).
 
-The analysis includes:
+The project answers three questions:
 
-__Exploratory Data Analysis__: Initial investigation into the relationship and correlation between Futures Price and Spot Index.
+1. Do Futures and Spot prices share a **long-run equilibrium** (cointegration)?
+2. Which series **leads** the other (Granger causality)?
+3. How does a **shock** to one series propagate to the other, and what do the
+   next few months look like (impulse response, variance decomposition,
+   forecasting)?
 
-__Stationarity Testing__: Conducted using the Phillips-Perron test and Augmented Dickey-Fuller test to assess the need for differencing in series.
+---
 
-__VAR Model__: Developed for multivariate time series forecasting and analysis of interdependent relationships.
+## Table of Contents
 
-__Cointegration Test__: Used to determine if the Futures and Spot prices maintain a long-term equilibrium.
+- [Repository Structure](#repository-structure)
+- [Data](#data)
+- [Getting Started](#getting-started)
+- [Methodology](#methodology)
+- [Results](#results)
+- [Key Findings](#key-findings)
+- [License](#license)
 
-__Policy Simulations__: Granger causality testing, impulse response function, and variance decomposition to evaluate the effects of shocks and causality in the variables.
+---
 
-__Forecasting__: Forecasts generated from the model with visualization of fan charts.
+## Repository Structure
 
-## Data Description:
-__Source__: Monthly data for NSA Futures Price and Spot Index collected from Investing.com.
+| File | Description |
+|------|-------------|
+| [`Cointegration.R`](Cointegration.R) | Engle–Granger cointegration test: ADF stationarity checks, OLS hedge ratio, and spread analysis. |
+| [`VAR.R`](VAR.R) | Builds and diagnoses the VAR(1) model; runs Granger causality, impulse response, variance decomposition, and forecasting. |
+| [`make_figures.R`](make_figures.R) | Regenerates every figure shown in this README into `figures/`. |
+| [`install_packages.R`](install_packages.R) | One-step installer for the required R packages. |
+| [`DataFile.csv`](DataFile.csv) | The dataset: monthly Futures Price and Spot Index, 120 observations. |
+| [`Report.docx`](Report.docx) | Full written report with methodology, results, and the R code. |
+| `figures/` | PNG outputs produced by `make_figures.R`. |
 
-__Period__: May 2012 to April 2022, covering 120 data points.
+---
 
-### Variables:
-__Futures Price__: Price of Nikkei 225 Futures.
+## Data
 
-__Spot Index__: Index value of Nikkei 225 at the time of each record.
+- **Source:** Monthly NSA 225 Futures Price and Spot Index from Investing.com.
+- **Period:** May 2012 – April 2022 (120 monthly observations).
+- **Columns** in [`DataFile.csv`](DataFile.csv):
 
-## Methodology:
+| Column | Read into R as | Meaning |
+|--------|----------------|---------|
+| `Date` | `Date` | Month of the observation (`Mon-YY`). |
+| `Future Price` | `Future.Price` | Nikkei 225 Futures price. |
+| `Index` | `Index` | Nikkei 225 Spot Index level. |
 
-1. __Exploratory Data Analysis (EDA)__:
-The scatter plot analysis showed a positive correlation between the Futures Price and Spot Index, indicating a potential relationship suitable for further statistical modeling.
+> The CSV is stored newest-first; the scripts call `rev()` so the analysis runs
+> in chronological order, then convert each column to a monthly `ts` object
+> starting at `c(2012, 5)`.
 
-2. __Stationarity Testing__:
-Using the Phillips-Perron test for initial stationarity checks, both series were found to be non-stationary. We then confirmed the non-stationarity with the Augmented Dickey-Fuller (ADF) test. First differencing made both series stationary, classifying them as I(1).
+---
 
-3. __VAR Model__:
-The optimal lag length was selected using criteria (AIC, HQ, SC, FPE) that pointed to a one-lag VAR model. We developed the model to analyze the interaction between Futures and Spot prices, with R-squared values above 0.95, indicating a good model fit.
+## Getting Started
 
-4. __Model Diagnostics__:
-Serial Correlation: Conducted tests confirmed no autocorrelation in residuals.
-Structural Stability: Stability tests indicated no structural breaks, ensuring the model's reliability over the observed period.
+### Prerequisites
 
-5. __Granger Causality and Impulse Response Function__:
-Granger Causality: The test showed that Futures price Granger-causes Spot Index, but the Spot Index does not Granger-cause Futures price.
-Impulse Response Function: Analyzed shocks in one variable and their impact on the other. Shocks in the Futures price significantly impacted the Spot Index, whereas shocks in the Spot Index did not affect the Futures price.
+- [R](https://cran.r-project.org/) **4.2 or newer** (developed on 4.2.0).
+- Optionally [RStudio](https://posit.co/download/rstudio-desktop/) for the
+  interactive, step-through workflow the scripts are written for.
 
-6. __Cointegration Analysis__:
-Using the Engle-Granger test, we checked for a cointegrated relationship between the Futures and Spot prices. The analysis revealed that the two series are cointegrated, implying a long-term equilibrium relationship.
+### 1. Clone the repository
 
-7. __Forecasting__:
-Forecasts were generated for the next five periods using the VAR model, and the fanchart visualizations demonstrated the forecast uncertainty and confidence intervals.
+```bash
+git clone https://github.com/VinayakMokashi/NSA-225-Var-Cointegration-Analysis.git
+cd NSA-225-Var-Cointegration-Analysis
+```
+
+### 2. Install the R dependencies
+
+The scripts use `tseries`, `vars`, `forecast`, and `ggplot2`. Install them in
+one step:
+
+```bash
+Rscript install_packages.R
+```
+
+or, from within R / RStudio:
+
+```r
+source("install_packages.R")
+```
+
+### 3. Run the analysis
+
+Set the working directory to the repository root, then run either script. Each
+one loads `DataFile.csv` automatically (no manual file picker needed).
+
+**In RStudio (recommended):** open `Cointegration.R` or `VAR.R` and run it
+line by line to inspect each test and plot as it appears.
+
+**From a terminal:**
+
+```bash
+Rscript Cointegration.R   # cointegration test and spread analysis
+Rscript VAR.R             # VAR model, causality, IRF, FEVD, forecast
+```
+
+### 4. (Optional) Regenerate the figures
+
+```bash
+Rscript make_figures.R    # writes the PNGs in figures/ used by this README
+```
+
+---
+
+## Methodology
+
+1. **Exploratory analysis.** A scatter plot of Futures Price against the Spot
+   Index shows a strong positive relationship, motivating joint time-series
+   modelling.
+
+2. **Stationarity testing.** The Phillips–Perron and Augmented Dickey–Fuller
+   (ADF) tests show both series are **non-stationary in levels** but
+   **stationary after first differencing** — i.e. both are integrated of order
+   one, **I(1)**.
+
+3. **Cointegration (Engle–Granger).** Because both series are I(1), an OLS
+   regression of Futures on Spot gives the **hedge ratio**, and the residual
+   **spread** is tested with the ADF test. The spread is **stationary, I(0)**,
+   so the two series are **cointegrated** — they share a long-run equilibrium.
+
+4. **VAR model.** `VARselect` chooses a **single lag** (agreed on by AIC, HQ,
+   SC, and FPE), so a **VAR(1)** with a constant is estimated. All roots lie
+   inside the unit circle (stable), R² exceeds 0.95, residuals show **no serial
+   correlation** (Portmanteau test, p > 0.05), and an OLS-CUSUM test shows **no
+   structural breaks**.
+
+5. **Policy simulations.**
+   - **Granger causality** — Futures price Granger-causes the Spot Index, but
+     not the reverse.
+   - **Impulse response functions (IRF)** — trace how a shock to one series
+     propagates to the other over 20 months.
+   - **Forecast error variance decomposition (FEVD)** — measures how much of
+     each series' variance is explained by shocks to itself vs. the other.
+
+6. **Forecasting.** The VAR(1) model forecasts both series five months ahead,
+   visualized as fancharts with 95% confidence bands.
+
+---
+
+## Results
+
+### Futures Price vs. Spot Index over time
+
+The two series move almost in lockstep and trend upward over the decade — the
+visual signature of a non-stationary, cointegrated pair.
+
+![Futures Price vs. Spot Index](figures/01_series_overlay.png)
+
+### Cointegration spread
+
+The spread (Futures − hedge ratio × Spot) fluctuates around a constant mean
+without drifting — it is stationary, **I(0)**, confirming cointegration.
+
+![Cointegration spread](figures/02_spread.png)
+
+### Impulse response: shock from Futures Price → Spot Index
+
+A one-standard-deviation shock to the Futures price produces a **positive,
+persistent** response in the Spot Index; the bootstrap confidence band stays
+above zero, so the effect is statistically significant.
+
+![Impulse response](figures/03_irf_futures_to_spot.png)
+
+### Forecast error variance decomposition
+
+The Futures price variance is driven almost entirely by its own shocks, while a
+growing share of the Spot Index variance is explained by **Futures-price
+shocks** — reinforcing the direction of causality.
+
+![FEVD](figures/04_fevd.png)
+
+### Five-month-ahead forecast
+
+VAR(1) fancharts for both series, with uncertainty widening over the forecast
+horizon.
+
+![Forecast fancharts](figures/05_forecast_fanchart.png)
+
+### Tests at a glance
+
+| Test | Target | Result | Implication |
+|------|--------|--------|-------------|
+| ADF / PP on levels | Both series | Non-stationary | Trending series |
+| ADF on first differences | Both series | Stationary | Each is **I(1)** |
+| ADF on spread | Futures − β·Spot | Stationary | Series are **cointegrated** |
+| `VARselect` | VAR order | 1 lag | Fit **VAR(1)** |
+| Portmanteau | VAR residuals | p > 0.05 | No serial correlation |
+| Granger | Futures → Spot | Significant | Futures **leads** Spot |
+| Granger | Spot → Futures | Not significant | Spot does not lead Futures |
+
+---
 
 ## Key Findings
-__Long-Term Relationship__: The Futures and Spot prices are cointegrated, suggesting a long-term equilibrium despite short-term fluctuations.
 
-__Causality__: Futures prices influence Spot Index in the short term but not vice versa.
+- **Long-run equilibrium.** Futures and Spot prices are **cointegrated** —
+  short-term deviations correct back toward a common trend.
+- **Price discovery in the futures market.** Futures prices **Granger-cause**
+  the Spot Index but not vice versa: the futures market leads, consistent with
+  it being where new information is priced in first.
+- **Shock propagation.** Shocks to the Futures price have a significant, lasting
+  positive impact on the Spot Index, making Futures a useful leading indicator.
 
-__Shock Impact__: Shocks in the Futures price affect the Spot Index, making it a key indicator for predictive purposes in financial markets.
+For the complete write-up, see [`Report.docx`](Report.docx).
 
-## Files in This Repository
+---
 
-Cointegration.R: R script for cointegration testing and analysis.
+## License
 
-VAR.R: R script for building and evaluating the VAR model.
-
-DataFile.csv: Dataset containing NSA Futures and Spot prices for analysis.
-
-Report.docx: Detailed report with methodology, analysis, and conclusions (Also contains the used R codes)
-
-## Prerequisites
-To run the analysis, you will need:
-R and RStudio
-
-__Libraries__: tseries, tidyverse, urca, vars, mFilter, forecast, TSstudio, ggplot2
+Released under the [MIT License](LICENSE). © 2024 Vinayak Mokashi.
